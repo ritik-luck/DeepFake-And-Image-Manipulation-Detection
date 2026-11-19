@@ -29,3 +29,4 @@ papers/
 outputs
 outputs_local_backup/
 *.pt
+!latex_report.zip
