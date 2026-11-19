@@ -282,10 +282,11 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
         ("8. Discussion, System Challenges & Engineering Solutions", "18"),
         ("   8.1 Research Trade-offs: Directional Orientation vs. Euclidean Energy", "18"),
         ("   8.2 Infrastructure Challenges: CUDA Ordinals & Multiprocessing Locks", "18"),
-        ("9. Conclusion & Publication Roadmap", "18"),
+        ("9. Conclusion & Future Enhancements", "18"),
         ("   9.1 Summary of Findings", "18"),
-        ("   9.2 Limitations & Road to CVPR/ICCV Submission", "18"),
+        ("   9.2 Limitations & Future Technical Directions", "18"),
         ("References", "19"),
+        ("Appendix: Mathematical Derivations & Pseudocode", "20"),
     ]
 
     toc_table_data = []
@@ -389,9 +390,9 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 5: CHAPTER 1: INTRODUCTION (1.1, 1.2, 1.3 - Fits exactly 1 full page)
+    # PAGE 5: SECTION 1: INTRODUCTION (1.1, 1.2, 1.3 - Fits exactly 1 full page)
     # =========================================================================
-    story.append(Paragraph("Chapter 1", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 1", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("Introduction", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=7, spaceBefore=2))
     
@@ -474,22 +475,22 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(Spacer(1, 3))
     story.append(Paragraph("1.6 Report Organization", h2_style))
     story.append(Paragraph(
-        "The remainder of this report is organized as follows. Chapter 2 surveys foundational literature and mathematical preliminaries "
-        "governing diffusion score matching, pixel-space DIRE, and latent-space LaRE². Chapter 3 presents the formal mathematical architecture "
+        "The remainder of this report is organized as follows. Section 2 surveys foundational literature and mathematical preliminaries "
+        "governing diffusion score matching, pixel-space DIRE, and latent-space LaRE². Section 3 presents the formal mathematical architecture "
         "of LSD, detailing VAE projection, discrete Laplacian perturbation, closed-form Tweedie inversion, directional cosine divergence, and spatial priors. "
-        "Chapter 4 describes authentic dataset engineering, rejection of synthetic mocks, and ground-truth mask pairing. "
-        "Chapter 5 analyzes the 4-way GPU benchmark results, computational latency, and architectural ablations. Chapter 6 validates pixel-level "
+        "Section 4 describes authentic dataset engineering, rejection of synthetic mocks, and ground-truth mask pairing. "
+        "Section 5 analyzes the 4-way GPU benchmark results, computational latency, and architectural ablations. Section 6 validates pixel-level "
         "localization against authentic binary ground-truth masks with numerical IoU and qualitative multi-panel plots. "
-        "Chapter 7 presents the Facial LoRA adaptation pipeline and the social media degradation robustness suite. Chapter 8 discusses engineering "
-        "challenges and research trade-offs, and Chapter 9 concludes with future publication roadmap directions.",
+        "Section 7 presents the Facial LoRA adaptation pipeline and the social media degradation robustness suite. Section 8 discusses engineering "
+        "challenges and research trade-offs, and Section 9 concludes with future enhancements.",
         body_style
     ))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 7: CHAPTER 2: LITERATURE REVIEW (Part 1: SDEs & Score Matching - Fully Expanded)
+    # PAGE 7: SECTION 2: LITERATURE REVIEW (Part 1: SDEs & Score Matching - Fully Expanded)
     # =========================================================================
-    story.append(Paragraph("Chapter 2", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 2", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("Literature Review & Theoretical Foundations", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
 
@@ -623,9 +624,9 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 9: CHAPTER 3: METHODOLOGY (Part 1: Projection, Laplacian, Tweedie - Filled)
+    # PAGE 9: SECTION 3: METHODOLOGY (Part 1: Projection, Laplacian, Tweedie - Filled)
     # =========================================================================
-    story.append(Paragraph("Chapter 3", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 3", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("System Architecture & Latent Score Divergence Methodology", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
 
@@ -757,9 +758,9 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 11: CHAPTER 4: DATASET ENGINEERING & AUTHENTICITY GUARDRAILS (Filled)
+    # PAGE 11: SECTION 4: DATASET ENGINEERING & AUTHENTICITY GUARDRAILS (Filled)
     # =========================================================================
-    story.append(Paragraph("Chapter 4", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 4", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("Dataset Construction, Preprocessing & Authenticity Guardrails", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
 
@@ -816,9 +817,9 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 12: CHAPTER 5: EMPIRICAL BASELINE EVALUATION (Part 1: Setup & Table 5.1 - Filled)
+    # PAGE 12: SECTION 5: EMPIRICAL BASELINE EVALUATION (Part 1: Setup & Table 5.1 - Filled)
     # =========================================================================
-    story.append(Paragraph("Chapter 5", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 5", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("Empirical Baseline Evaluation & GPU Benchmarking", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
 
@@ -944,9 +945,9 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 14: CHAPTER 6: LOCALIZATION BENCHMARK (Part 1: Protocol & Table 6.1 - Filled)
+    # PAGE 14: SECTION 6: LOCALIZATION BENCHMARK (Part 1: Protocol & Table 6.1 - Filled)
     # =========================================================================
-    story.append(Paragraph("Chapter 6", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 6", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("Pixel-Level Manipulation Localization Benchmark (Phase 5 Proof)", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
 
@@ -1059,9 +1060,9 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 16: CHAPTER 7: LORA ADAPTATION & ROBUSTNESS (Part 1: LoRA Architecture & Convergence - Fully Expanded)
+    # PAGE 16: SECTION 7: LORA ADAPTATION & ROBUSTNESS (Part 1: LoRA Architecture & Convergence - Fully Expanded)
     # =========================================================================
-    story.append(Paragraph("Chapter 7", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 7", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("Facial LoRA Domain Adaptation & Robustness Suite", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
 
@@ -1182,7 +1183,7 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     # =========================================================================
     # PAGE 18: CHAPTER 8 & 9: DISCUSSION, CHALLENGES & CONCLUSION (Fully Expanded)
     # =========================================================================
-    story.append(Paragraph("Chapter 8", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Section 8", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
     story.append(Paragraph("Discussion & Engineering Challenges", ParagraphStyle('ChapHeaderSmall', fontName='Times-Bold', fontSize=13, leading=16, textColor=c_primary, spaceBefore=2, spaceAfter=3)))
     story.append(HRFlowable(width="100%", thickness=0.8, color=c_primary, spaceAfter=5, spaceBefore=1))
 
@@ -1204,8 +1205,8 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(Paragraph("&bull; <b>FP16 Numerical Underflow &amp; Stability:</b> In half-precision mode on Tensor cores, division by near-zero vector norms caused sporadic NaN values. We engineered an adaptive epsilon stabilizer $\\epsilon_{stab} = 10^{-7}$, guaranteeing absolute numerical stability.", bullet_style))
 
     story.append(Spacer(1, 4))
-    story.append(Paragraph("Chapter 9", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
-    story.append(Paragraph("Conclusion & Publication Roadmap", ParagraphStyle('ChapHeaderSmall', fontName='Times-Bold', fontSize=13, leading=16, textColor=c_primary, spaceBefore=2, spaceAfter=3)))
+    story.append(Paragraph("Section 9", ParagraphStyle('ChapNum', fontName='Helvetica-Bold', fontSize=10.5, leading=12.5, textColor=c_secondary)))
+    story.append(Paragraph("Conclusion & Future Enhancements", ParagraphStyle('ChapHeaderSmall', fontName='Times-Bold', fontSize=13, leading=16, textColor=c_primary, spaceBefore=2, spaceAfter=3)))
     story.append(HRFlowable(width="100%", thickness=0.8, color=c_primary, spaceAfter=5, spaceBefore=1))
 
     story.append(Paragraph("9.1 Summary of Findings", h3_style))
@@ -1218,12 +1219,14 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
         body_style
     ))
 
-    story.append(Paragraph("9.2 Limitations & Road to Publication", h3_style))
+    story.append(Paragraph("9.2 Limitations & Future Technical Directions", h3_style))
     story.append(Paragraph(
-        "Future research will extend this framework along three axes: (1) Scaling Facial LoRA training to 500+ diverse identities across ethnic groups "
-        "to ensure demographic fairness, (2) Evaluating cross-generator generalization on commercial diffusion models (Midjourney v6, DALL-E 3), "
-        "and (3) Deploying an optimized TensorRT engine for real-time video stream inspection on edge security hardware. "
-        "The codebase and empirical benchmark suite are structured to support direct manuscript submission to the IEEE/CVF CVPR 2027 Workshop on Media Forensics.",
+        "While LSD establishes superior speed and localization precision over iterative baselines, future research will explore key technical avenues: "
+        "(1) <i>Spatio-Temporal Video Inversion:</i> Extending Tweedie inversion to continuous video streams using 3D score dynamics and optical flow warping; "
+        "(2) <i>Cross-Generator Foundation Models:</i> Generalizing zero-shot projection across next-gen flow-matching architectures (SDXL, Flux.1, Midjourney v6, DALL-E 3); "
+        "(3) <i>Edge Hardware Optimization:</i> Compiling the VAE encoder and 1-step UNet with TensorRT INT8 calibration for sub-15ms edge inspection; "
+        "(4) <i>Demographic Fairness:</i> Expanding facial LoRA adapters across diverse racial and age cohorts to ensure uniform forensic sensitivity; and "
+        "(5) <i>Multimodal Fusion:</i> Synchronizing visual heatmaps with acoustic score divergence models for joint audio-visual deepfake detection.",
         body_style
     ))
     story.append(PageBreak())
@@ -1263,6 +1266,75 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
 
     for ref in refs:
         story.append(Paragraph(ref, ref_style))
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PAGE 20: APPENDIX: THEORETICAL DERIVATION, HYPERPARAMETERS & PSEUDOCODE
+    # =========================================================================
+    story.append(Paragraph("Appendix: Mathematical Derivations & Pseudocode", h1_style))
+    story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
+
+    story.append(Paragraph("A.1 Tweedie Inversion Derivation from Denoising Score Matching", h2_style))
+    story.append(Paragraph(
+        "Let clean latent state z<sub>0</sub> &sim; p<sub>data</sub>(z) undergo Gaussian perturbation q(z<sub>t</sub> | z<sub>0</sub>) = N(&radic;&alpha;&#773;<sub>t</sub>z<sub>0</sub>, (1 - &alpha;&#773;<sub>t</sub>)I). "
+        "By Tweedie's formula, the conditional posterior expectation satisfies: "
+        "<br/><font color='#1E3A8A'><b>&nbsp;&nbsp;&nbsp;&nbsp;E[z<sub>0</sub> | z<sub>t</sub>] = (1 / &radic;&alpha;&#773;<sub>t</sub>) &times; [ z<sub>t</sub> + (1 - &alpha;&#773;<sub>t</sub>) &nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>) ]</b></font><br/>"
+        "Under Vincent's score matching equivalence, the optimal neural denoiser &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) satisfies "
+        "&nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>) = -&epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) / &radic;(1 - &alpha;&#773;<sub>t</sub>). "
+        "Substituting this identity directly into Tweedie's formula yields the exact single-step closed-form Tweedie inversion operator: "
+        "<br/><font color='#1E3A8A'><b>&nbsp;&nbsp;&nbsp;&nbsp;z&#770;<sub>0</sub>(z<sub>t</sub>) = [ z<sub>t</sub> - &radic;(1 - &alpha;&#773;<sub>t</sub>) &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) ] / &radic;&alpha;&#773;<sub>t</sub></b></font><br/>"
+        "This analytical identity proves that Tweedie inversion is exact for Gaussian perturbation, bypassing iterative numerical ODE integration.",
+        body_style
+    ))
+
+    story.append(Spacer(1, 4))
+    story.append(Paragraph("A.2 System Hyperparameters and Configuration Specifications", h2_style))
+
+    app_table_data = [
+        [Paragraph("<b>Component</b>", table_header), Paragraph("<b>Parameter</b>", table_header), Paragraph("<b>Value / Specification</b>", table_header)],
+        [Paragraph("<b>Diffusion Backbone</b>", table_body_bold), Paragraph("Model & Dimensions", table_body), Paragraph("CompVis Latent Diffusion (SD-v1.5), C=4, f=8, Resolution 512&times;512", table_body)],
+        [Paragraph("<b>Inversion Operator</b>", table_body_bold), Paragraph("Timestep & Alpha", table_body), Paragraph("t = 20, &alpha;&#773;<sub>20</sub> = 0.9852, &radic;(1-&alpha;&#773;<sub>20</sub>) = 0.1217, Angle &lambda; = 1.0", table_body)],
+        [Paragraph("<b>Facial LoRA Adapter</b>", table_body_bold), Paragraph("Modules & Rank", table_body), Paragraph("Cross-attention (to_q, to_k, to_v), Rank r=8, &alpha;=16, AdamW &eta;=10<sup>-4</sup>", table_body)],
+        [Paragraph("<b>Hardware & Prec.</b>", table_body_bold), Paragraph("Compute Environment", table_body), Paragraph("NVIDIA Tesla T4 (16GB), Mixed Precision FP16, &epsilon;<sub>stab</sub> = 10<sup>-7</sup>", table_body)],
+    ]
+    t_app = Table(app_table_data, colWidths=[120, 140, 244])
+    t_app.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), c_light_bg),
+        ('GRID', (0, 0), (-1, -1), 0.5, c_border),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING', (0, 0), (-1, -1), 3),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+    ]))
+    story.append(t_app)
+
+    story.append(Spacer(1, 5))
+    story.append(Paragraph("A.3 Core Latent Score Divergence PyTorch Reference Implementation", h2_style))
+    code_text = (
+        "<b>@torch.no_grad()</b><br/>"
+        "<b>def</b> compute_lsd(vae, unet, scheduler, x, t=20):<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;z_0 = vae.encode(x).latent_dist.sample() * 0.18215<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;noise = torch.randn_like(z_0)<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;z_t = scheduler.add_noise(z_0, noise, torch.tensor([t]))<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;pred_eps = unet(z_t, torch.tensor([t])).sample<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;alpha_t = scheduler.alphas_cumprod[t]<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;z_0_tweedie = (z_t - torch.sqrt(1 - alpha_t) * pred_eps) / torch.sqrt(alpha_t)<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;diff = z_t - z_0_tweedie<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;cos_sim = torch.sum(diff * noise, dim=1, keepdim=True) / (torch.norm(diff, dim=1, keepdim=True)*torch.norm(noise, dim=1, keepdim=True) + 1e-7)<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;score_map = F.interpolate(1.0 - cos_sim, size=x.shape[-2:], mode='bilinear')<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;<b>return</b> score_map.mean().item(), score_map"
+    )
+    code_p = Paragraph(code_text, ParagraphStyle('CodeListing', fontName='Courier', fontSize=7.2, leading=9.8, textColor=c_dark))
+    code_box = Table([[code_p]], colWidths=[504])
+    code_box.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), c_light_bg),
+        ('BOX', (0, 0), (-1, -1), 0.8, c_border),
+        ('TOPPADDING', (0, 0), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+    ]))
+    story.append(code_box)
 
     doc.build(story, canvasmaker=AcademicReportCanvas)
     print(f"Successfully generated {output_filename}")
