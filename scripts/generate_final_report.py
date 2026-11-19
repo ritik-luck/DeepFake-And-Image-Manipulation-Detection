@@ -285,8 +285,7 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
         ("9. Conclusion & Future Enhancements", "18"),
         ("   9.1 Summary of Findings", "18"),
         ("   9.2 Limitations & Future Technical Directions", "18"),
-        ("Appendix: Mathematical Derivations & Pseudocode", "19"),
-        ("References", "20"),
+        ("References", "19"),
     ]
 
     toc_table_data = []
@@ -1232,76 +1231,7 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 19: APPENDIX: THEORETICAL DERIVATION, HYPERPARAMETERS & PSEUDOCODE
-    # =========================================================================
-    story.append(Paragraph("Appendix: Mathematical Derivations & Pseudocode", h1_style))
-    story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
-
-    story.append(Paragraph("A.1 Tweedie Inversion Derivation from Denoising Score Matching", h2_style))
-    story.append(Paragraph(
-        "Let clean latent state z<sub>0</sub> &sim; p<sub>data</sub>(z) undergo Gaussian perturbation q(z<sub>t</sub> | z<sub>0</sub>) = N(&radic;&alpha;&#773;<sub>t</sub>z<sub>0</sub>, (1 - &alpha;&#773;<sub>t</sub>)I). "
-        "By Tweedie's formula, the conditional posterior expectation satisfies: "
-        "<br/><font color='#1E3A8A'><b>&nbsp;&nbsp;&nbsp;&nbsp;E[z<sub>0</sub> | z<sub>t</sub>] = (1 / &radic;&alpha;&#773;<sub>t</sub>) &times; [ z<sub>t</sub> + (1 - &alpha;&#773;<sub>t</sub>) &nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>) ]</b></font><br/>"
-        "Under Vincent's score matching equivalence, the optimal neural denoiser &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) satisfies "
-        "&nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>) = -&epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) / &radic;(1 - &alpha;&#773;<sub>t</sub>). "
-        "Substituting this identity directly into Tweedie's formula yields the exact single-step closed-form Tweedie inversion operator: "
-        "<br/><font color='#1E3A8A'><b>&nbsp;&nbsp;&nbsp;&nbsp;z&#770;<sub>0</sub>(z<sub>t</sub>) = [ z<sub>t</sub> - &radic;(1 - &alpha;&#773;<sub>t</sub>) &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) ] / &radic;&alpha;&#773;<sub>t</sub></b></font><br/>"
-        "This analytical identity proves that Tweedie inversion is exact for Gaussian perturbation, bypassing iterative numerical ODE integration.",
-        body_style
-    ))
-
-    story.append(Spacer(1, 4))
-    story.append(Paragraph("A.2 System Hyperparameters and Configuration Specifications", h2_style))
-
-    app_table_data = [
-        [Paragraph("<b>Component</b>", table_header), Paragraph("<b>Parameter</b>", table_header), Paragraph("<b>Value / Specification</b>", table_header)],
-        [Paragraph("<b>Diffusion Backbone</b>", table_body_bold), Paragraph("Model & Dimensions", table_body), Paragraph("CompVis Latent Diffusion (SD-v1.5), C=4, f=8, Resolution 512&times;512", table_body)],
-        [Paragraph("<b>Inversion Operator</b>", table_body_bold), Paragraph("Timestep & Alpha", table_body), Paragraph("t = 20, &alpha;&#773;<sub>20</sub> = 0.9852, &radic;(1-&alpha;&#773;<sub>20</sub>) = 0.1217, Angle &lambda; = 1.0", table_body)],
-        [Paragraph("<b>Facial LoRA Adapter</b>", table_body_bold), Paragraph("Modules & Rank", table_body), Paragraph("Cross-attention (to_q, to_k, to_v), Rank r=8, &alpha;=16, AdamW &eta;=10<sup>-4</sup>", table_body)],
-        [Paragraph("<b>Hardware & Prec.</b>", table_body_bold), Paragraph("Compute Environment", table_body), Paragraph("NVIDIA Tesla T4 (16GB), Mixed Precision FP16, &epsilon;<sub>stab</sub> = 10<sup>-7</sup>", table_body)],
-    ]
-    t_app = Table(app_table_data, colWidths=[120, 140, 244])
-    t_app.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), c_light_bg),
-        ('GRID', (0, 0), (-1, -1), 0.5, c_border),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, -1), 3),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
-    ]))
-    story.append(t_app)
-
-    story.append(Spacer(1, 5))
-    story.append(Paragraph("A.3 Core Latent Score Divergence PyTorch Reference Implementation", h2_style))
-    code_text = (
-        "<b>@torch.no_grad()</b><br/>"
-        "<b>def</b> compute_lsd(vae, unet, scheduler, x, t=20):<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;z_0 = vae.encode(x).latent_dist.sample() * 0.18215<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;noise = torch.randn_like(z_0)<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;z_t = scheduler.add_noise(z_0, noise, torch.tensor([t]))<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;pred_eps = unet(z_t, torch.tensor([t])).sample<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;alpha_t = scheduler.alphas_cumprod[t]<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;z_0_tweedie = (z_t - torch.sqrt(1 - alpha_t) * pred_eps) / torch.sqrt(alpha_t)<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;diff = z_t - z_0_tweedie<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;cos_sim = torch.sum(diff * noise, dim=1, keepdim=True) / (torch.norm(diff, dim=1, keepdim=True)*torch.norm(noise, dim=1, keepdim=True) + 1e-7)<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;score_map = F.interpolate(1.0 - cos_sim, size=x.shape[-2:], mode='bilinear')<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;<b>return</b> score_map.mean().item(), score_map"
-    )
-    code_p = Paragraph(code_text, ParagraphStyle('CodeListing', fontName='Courier', fontSize=7.2, leading=9.8, textColor=c_dark))
-    code_box = Table([[code_p]], colWidths=[504])
-    code_box.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), c_light_bg),
-        ('BOX', (0, 0), (-1, -1), 0.8, c_border),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-        ('LEFTPADDING', (0, 0), (-1, -1), 8),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
-    ]))
-    story.append(code_box)
-
-    story.append(PageBreak())
-
-    # =========================================================================
-    # PAGE 20: REFERENCES (IEEE Style, [1] to [13] - Reference [14] removed - Filled)
+    # PAGE 19: REFERENCES (IEEE Style, [1] to [13] - Reference [14] removed - Filled)
     # =========================================================================
     story.append(Paragraph("References", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=14, spaceBefore=2))
