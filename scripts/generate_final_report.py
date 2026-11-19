@@ -285,8 +285,8 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
         ("9. Conclusion & Future Enhancements", "18"),
         ("   9.1 Summary of Findings", "18"),
         ("   9.2 Limitations & Future Technical Directions", "18"),
-        ("References", "19"),
-        ("Appendix: Mathematical Derivations & Pseudocode", "20"),
+        ("Appendix: Mathematical Derivations & Pseudocode", "19"),
+        ("References", "20"),
     ]
 
     toc_table_data = []
@@ -1232,45 +1232,7 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 19: REFERENCES (IEEE Style, [1] to [13] - Reference [14] removed - Filled)
-    # =========================================================================
-    story.append(Paragraph("References", h1_style))
-    story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=14, spaceBefore=2))
-
-    refs = [
-        "[1] Z. Wang, J. Bao, W. Zhou, W. Wang, H. Li (2023). \"DIRE for Diffusion-Generated Image Detection.\" <i>Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)</i>, pp. 22445-22455.",
-        "[2] X. Chen, C. Dong, J. Ji, Y. Cao, W. Guan (2024). \"LaRE²: Latent Reconstruction Error for Deepfake Detection.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 9102-9111.",
-        "[3] Y. Liu, Z. Chen, X. Zhao, Z. Zhang (2026). \"Active Diffusion Reconstruction Discrepancy for Anti-Forensic Facial Manipulation Detection.\" <i>PLOS ONE</i>, 21(2): e0314892.",
-        "[4] A. Rössler, D. Cozzolino, L. Verdoliva, C. Riess, J. Thies, M. Nießner (2019). \"FaceForensics++: Learning to Detect Manipulated Facial Images.\" <i>Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)</i>, pp. 1-11.",
-        "[5] R. Rombach, A. Blattmann, D. Lorenz, P. Esser, B. Ommer (2022). \"High-Resolution Image Synthesis with Latent Diffusion Models.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 10684-10695.",
-        "[6] B. Efron (2011). \"Tweedie's Formula and Selection Bias.\" <i>Journal of the American Statistical Association</i>, 106(496): 1602-1614.",
-        "[7] Y. Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, B. Poole (2021). \"Score-Based Generative Modeling through Stochastic Differential Equations.\" <i>International Conference on Learning Representations (ICLR)</i>.",
-        "[8] P. Vincent (2011). \"A Connection Between Score Matching and Denoising Autoencoders.\" <i>Neural Computation</i>, 23(7): 1661-1674.",
-        "[9] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen (2022). \"LoRA: Low-Rank Adaptation of Large Language Models.\" <i>International Conference on Learning Representations (ICLR)</i>.",
-        "[10] T. Karras, S. Laine, T. Aila (2019). \"A Style-Based Generator Architecture for Generative Adversarial Networks.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 4401-4410.",
-        "[11] Y. Li, X. Yang, P. Sun, H. Qi, S. Lyu (2020). \"Celeb-DF: A Large-Scale Challenging Dataset for DeepFake Forensics.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 3207-3216.",
-        "[12] L. Guarnera, O. Giudice, S. Battiato (2024). \"Mastering Deepfake: Cross-Architecture Evaluation of Synthetic Faces Across Nine Generative Families.\" <i>ACM Transactions on Multimedia Computing, Communications, and Applications (TOMM)</i>.",
-        "[13] J. Frank, T. Eisenhofer, L. Schönherr, A. Fischer, D. Kolossa, T. Holz (2020). \"Leveraging Frequency Analysis for Deep Fake Image Recognition.\" <i>International Conference on Machine Learning (ICML)</i>, PMLR 119: 3247-3258."
-    ]
-
-    ref_style = ParagraphStyle(
-        'RefEntry',
-        fontName='Times-Roman',
-        fontSize=10.0,
-        leading=15.5,
-        leftIndent=18,
-        firstLineIndent=-18,
-        textColor=c_dark,
-        spaceAfter=11.5
-    )
-
-    for ref in refs:
-        story.append(Paragraph(ref, ref_style))
-
-    story.append(PageBreak())
-
-    # =========================================================================
-    # PAGE 20: APPENDIX: THEORETICAL DERIVATION, HYPERPARAMETERS & PSEUDOCODE
+    # PAGE 19: APPENDIX: THEORETICAL DERIVATION, HYPERPARAMETERS & PSEUDOCODE
     # =========================================================================
     story.append(Paragraph("Appendix: Mathematical Derivations & Pseudocode", h1_style))
     story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=8, spaceBefore=2))
@@ -1335,6 +1297,46 @@ def generate_report(output_filename="BTech_Project_Report_Ritik_Yadav.pdf"):
         ('RIGHTPADDING', (0, 0), (-1, -1), 8),
     ]))
     story.append(code_box)
+
+    story.append(PageBreak())
+
+    # =========================================================================
+    # PAGE 20: REFERENCES (IEEE Style, [1] to [13] - Reference [14] removed - Filled)
+    # =========================================================================
+    story.append(Paragraph("References", h1_style))
+    story.append(HRFlowable(width="100%", thickness=1, color=c_primary, spaceAfter=14, spaceBefore=2))
+
+    refs = [
+        "[1] Z. Wang, J. Bao, W. Zhou, W. Wang, H. Li (2023). \"DIRE for Diffusion-Generated Image Detection.\" <i>Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)</i>, pp. 22445-22455.",
+        "[2] X. Chen, C. Dong, J. Ji, Y. Cao, W. Guan (2024). \"LaRE²: Latent Reconstruction Error for Deepfake Detection.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 9102-9111.",
+        "[3] Y. Liu, Z. Chen, X. Zhao, Z. Zhang (2026). \"Active Diffusion Reconstruction Discrepancy for Anti-Forensic Facial Manipulation Detection.\" <i>PLOS ONE</i>, 21(2): e0314892.",
+        "[4] A. Rössler, D. Cozzolino, L. Verdoliva, C. Riess, J. Thies, M. Nießner (2019). \"FaceForensics++: Learning to Detect Manipulated Facial Images.\" <i>Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)</i>, pp. 1-11.",
+        "[5] R. Rombach, A. Blattmann, D. Lorenz, P. Esser, B. Ommer (2022). \"High-Resolution Image Synthesis with Latent Diffusion Models.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 10684-10695.",
+        "[6] B. Efron (2011). \"Tweedie's Formula and Selection Bias.\" <i>Journal of the American Statistical Association</i>, 106(496): 1602-1614.",
+        "[7] Y. Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, B. Poole (2021). \"Score-Based Generative Modeling through Stochastic Differential Equations.\" <i>International Conference on Learning Representations (ICLR)</i>.",
+        "[8] P. Vincent (2011). \"A Connection Between Score Matching and Denoising Autoencoders.\" <i>Neural Computation</i>, 23(7): 1661-1674.",
+        "[9] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen (2022). \"LoRA: Low-Rank Adaptation of Large Language Models.\" <i>International Conference on Learning Representations (ICLR)</i>.",
+        "[10] T. Karras, S. Laine, T. Aila (2019). \"A Style-Based Generator Architecture for Generative Adversarial Networks.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 4401-4410.",
+        "[11] Y. Li, X. Yang, P. Sun, H. Qi, S. Lyu (2020). \"Celeb-DF: A Large-Scale Challenging Dataset for DeepFake Forensics.\" <i>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 3207-3216.",
+        "[12] L. Guarnera, O. Giudice, S. Battiato (2024). \"Mastering Deepfake: Cross-Architecture Evaluation of Synthetic Faces Across Nine Generative Families.\" <i>ACM Transactions on Multimedia Computing, Communications, and Applications (TOMM)</i>.",
+        "[13] J. Frank, T. Eisenhofer, L. Schönherr, A. Fischer, D. Kolossa, T. Holz (2020). \"Leveraging Frequency Analysis for Deep Fake Image Recognition.\" <i>International Conference on Machine Learning (ICML)</i>, PMLR 119: 3247-3258."
+    ]
+
+    ref_style = ParagraphStyle(
+        'RefEntry',
+        fontName='Times-Roman',
+        fontSize=10.0,
+        leading=15.5,
+        leftIndent=18,
+        firstLineIndent=-18,
+        textColor=c_dark,
+        spaceAfter=11.5
+    )
+
+    for ref in refs:
+        story.append(Paragraph(ref, ref_style))
+
+
 
     doc.build(story, canvasmaker=AcademicReportCanvas)
     print(f"Successfully generated {output_filename}")
