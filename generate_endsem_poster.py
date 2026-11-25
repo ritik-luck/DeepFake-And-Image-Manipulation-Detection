@@ -111,7 +111,7 @@ def build_pdf():
     # COLUMN 1: MOTIVATION, TAXONOMY, TWEEDIE & COSINE FORMULATION
     # =========================================================================
     col1 = []
-    col1.append(Paragraph("1. Abstract & Research Motivation", h1_style))
+    col1.append(Paragraph("Abstract & Research Motivation", h1_style))
     col1.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col1.append(Paragraph(
         "The rapid evolution of generative AI—from GANs (StyleGAN2) to Latent Diffusion Models (Stable Diffusion v1.5, DALL-E 3)—has made it trivial to produce "
@@ -129,7 +129,7 @@ def build_pdf():
     col1.append(Spacer(1, 4))
 
     # Table 2.1: Comparative Taxonomy
-    col1.append(Paragraph("2. Comparative Taxonomy of Forensic Paradigms", h1_style))
+    col1.append(Paragraph("Comparative Taxonomy of Forensic Paradigms", h1_style))
     col1.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     tax_data = [
         [Paragraph("<b>Framework</b>", th_style), Paragraph("<b>Inference Domain</b>", th_style), Paragraph("<b>Inversion Method</b>", th_style), Paragraph("<b>Metric</b>", th_style), Paragraph("<b>Latency</b>", th_style), Paragraph("<b>Robustness</b>", th_style)],
@@ -152,7 +152,7 @@ def build_pdf():
     col1.append(t_tax)
     col1.append(Spacer(1, 4))
 
-    col1.append(Paragraph("3. Closed-Form 1-Step Tweedie Inversion", h1_style))
+    col1.append(Paragraph("Closed-Form 1-Step Tweedie Inversion", h1_style))
     col1.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col1.append(Paragraph(
         "For clean latent z<sub>0</sub> &sim; p<sub>data</sub>(z) perturbed by Gaussian noise q(z<sub>t</sub> | z<sub>0</sub>) = N(&radic;&alpha;&#773;<sub>t</sub>z<sub>0</sub>, (1-&alpha;&#773;<sub>t</sub>)I), "
@@ -179,7 +179,7 @@ def build_pdf():
     ))
     col1.append(Spacer(1, 4))
 
-    col1.append(Paragraph("4. Directional Cosine Divergence vs. Euclidean L2", h1_style))
+    col1.append(Paragraph("Directional Cosine Divergence vs. Euclidean L2", h1_style))
     col1.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col1.append(Paragraph(
         "Rather than measuring residual magnitude (which is heavily biased by illumination), LSD computes the <b>directional angle</b> between displacement vector "
@@ -206,7 +206,7 @@ def build_pdf():
     # COLUMN 2: ARCHITECTURE, GPU BENCHMARK, ABLATION, DATASETS & LORA
     # =========================================================================
     col2 = []
-    col2.append(Paragraph("5. End-to-End System Pipeline & Architecture", h1_style))
+    col2.append(Paragraph("End-to-End System Pipeline & Architecture", h1_style))
     col2.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     
     pipeline_text = (
@@ -226,7 +226,7 @@ def build_pdf():
     col2.append(t_pipe)
     col2.append(Spacer(1, 4))
 
-    col2.append(Paragraph("6. Empirical Baseline GPU Benchmark (Tesla T4)", h1_style))
+    col2.append(Paragraph("Empirical Baseline GPU Benchmark (Tesla T4)", h1_style))
     col2.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col2.append(Paragraph("Head-to-head empirical comparison across authentic datasets (FaceForensics++, 140k Real/Fake, Celeb-DF v2) on NVIDIA Tesla T4 GPU (FP16):", body_style))
 
@@ -251,7 +251,7 @@ def build_pdf():
     col2.append(Paragraph("<b>Benchmark Takeaway:</b> LSD delivers a <b>58&times; speedup</b> over DIRE with the highest precision (66.67%) and lowest false alarm rate (12.1%). Enables 23.1 FPS real-time video stream inspection.", caption_style))
     col2.append(Spacer(1, 4))
 
-    col2.append(Paragraph("7. Architectural Component Ablation Study", h1_style))
+    col2.append(Paragraph("Architectural Component Ablation Study", h1_style))
     col2.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     ab_data = [
         [Paragraph("<b>Ablation Configuration</b>", th_style), Paragraph("<b>Domain</b>", th_style), Paragraph("<b>AUROC</b>", th_style), Paragraph("<b>AP</b>", th_style), Paragraph("<b>Precision</b>", th_style), Paragraph("<b>False Alarm Rate</b>", th_style)],
@@ -275,7 +275,7 @@ def build_pdf():
     col2.append(Spacer(1, 4))
 
     # Table 4.1: Authentic Benchmark Datasets
-    col2.append(Paragraph("8. Authentic Datasets & Facial LoRA Specialization", h1_style))
+    col2.append(Paragraph("Authentic Datasets & Facial LoRA Specialization", h1_style))
     col2.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     ds_data = [
         [Paragraph("<b>Benchmark Dataset</b>", th_style), Paragraph("<b>Authentic</b>", th_style), Paragraph("<b>Manipulated</b>", th_style), Paragraph("<b>Generative Family</b>", th_style), Paragraph("<b>Evaluation Role</b>", th_style)],
@@ -319,7 +319,7 @@ def build_pdf():
     # COLUMN 3: LOCALIZATION PROOF, MULTI-PANEL FIGURE, ROBUSTNESS & SUMMARY
     # =========================================================================
     col3 = []
-    col3.append(Paragraph("9. Phase 5 Ground-Truth Localization Proof", h1_style))
+    col3.append(Paragraph("Phase 5 Ground-Truth Localization Proof", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col3.append(Paragraph(
         "Candidate heatmaps evaluated against 50 partially manipulated FaceForensics++ video frames paired with authentic binary ground-truth masks. "
@@ -348,7 +348,7 @@ def build_pdf():
     col3.append(Spacer(1, 4))
 
     # Figure 1: Multi-Panel Inspection
-    col3.append(Paragraph("10. Multi-Panel Visual Forensic Inspection", h1_style))
+    col3.append(Paragraph("Multi-Panel Visual Forensic Inspection", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     fig_path = 'latex_report/figures/inspection.png'
     if os.path.exists(fig_path):
@@ -357,7 +357,7 @@ def build_pdf():
     col3.append(Spacer(1, 4))
 
     # Figure 2: Real vs Fake Localization
-    col3.append(Paragraph("11. Real vs. Deepfake Facial Localization Proof", h1_style))
+    col3.append(Paragraph("Real vs. Deepfake Facial Localization Proof", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     fig_fake = 'latex_report/figures/fake_face_localization.png'
     if os.path.exists(fig_fake):
@@ -365,7 +365,7 @@ def build_pdf():
         col3.append(Paragraph("<b>Figure 2:</b> Deepfake face localization heatmap: LSD isolates tampered facial regions (eyes/mouth) while suppressing authentic background.", caption_style))
     col3.append(Spacer(1, 4))
 
-    col3.append(Paragraph("12. Social Media Robustness & Project Deliverables", h1_style))
+    col3.append(Paragraph("Social Media Robustness & Project Deliverables", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
 
     # Robustness Table
