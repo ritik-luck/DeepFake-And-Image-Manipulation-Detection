@@ -210,11 +210,11 @@ def build_pdf():
     col2.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     
     pipeline_text = (
-        "<b>Step 1: Latent Manifold Projection:</b> Input face RGB I &isin; R<sup>3&times;512&times;512</sup> &rarr; VAE EncoderKL &rarr; z<sub>0</sub> &isin; R<sup>4&times;64&times;64</sup> (&sigma;<sub>scale</sub> = 0.18215, 48&times; compression).<br/>"
-        "<b>Step 2: Differential Spectral Perturbation:</b> Blend 35% discrete Laplacian gradients into forward noise at timestep t=20 (&alpha;&#773;<sub>20</sub>=0.9852).<br/>"
+        "<b>&bull; Latent Manifold Projection:</b> Input face RGB I &isin; R<sup>3&times;512&times;512</sup> &rarr; VAE EncoderKL &rarr; z<sub>0</sub> &isin; R<sup>4&times;64&times;64</sup> (&sigma;<sub>scale</sub> = 0.18215, 48&times; compression).<br/>"
+        "<b>&bull; Differential Spectral Perturbation:</b> Blend 35% discrete Laplacian gradients into forward noise at timestep t=20 (&alpha;&#773;<sub>20</sub>=0.9852).<br/>"
         "<b>Step 3: 1-Step Score Inference:</b> Single forward pass through UNet denoiser &rarr; score prediction &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t).<br/>"
         "<b>Step 4: Analytical Tweedie Inversion:</b> Closed-form 1-step projection &rarr; uncorrupted latent estimate z&#770;<sub>0</sub>.<br/>"
-        "<b>Step 5: Multi-Scale Spatial Prior (MSI):</b> Channel norm aggregation + edge-preserving bilateral filter (&sigma;=1.0) + bilinear upsampling &rarr; 512&times;512 pixel localization heatmap."
+        "<b>&bull; Multi-Scale Spatial Prior (MSI):</b> Channel norm aggregation + edge-preserving bilateral filter (&sigma;=1.0) + bilinear upsampling &rarr; 512&times;512 pixel localization heatmap."
     )
     t_pipe = Table([[Paragraph(pipeline_text, body_style)]], colWidths=[FRAME_WIDTH - 4])
     t_pipe.setStyle(TableStyle([
@@ -255,10 +255,10 @@ def build_pdf():
     col2.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     ab_data = [
         [Paragraph("<b>Ablation Configuration</b>", th_style), Paragraph("<b>Domain</b>", th_style), Paragraph("<b>AUROC</b>", th_style), Paragraph("<b>AP</b>", th_style), Paragraph("<b>Precision</b>", th_style), Paragraph("<b>False Alarm Rate</b>", th_style)],
-        [Paragraph("Config 1: Tweedie L2 Baseline", tb_style), Paragraph("Euclidean", tb_center), Paragraph("0.5350", tb_center), Paragraph("0.5431", tb_center), Paragraph("61.70%", tb_center), Paragraph("38.30%", tb_center)],
-        [Paragraph("Config 2: Directional Cosine", tb_style), Paragraph("Cosine [1-cos]", tb_center), Paragraph("0.5358", tb_center), Paragraph("0.5520", tb_center), Paragraph("65.20%", tb_center), Paragraph("18.40%", tb_center)],
-        [Paragraph("Config 3: + Spectral Perturb.", tb_style), Paragraph("Cosine+Laplacian", tb_center), Paragraph("0.5360", tb_center), Paragraph("0.5651", tb_center), Paragraph("66.67%", tb_center), Paragraph("12.10%", tb_center)],
-        [Paragraph("<b>Config 4: Full LSD Engine</b>", tb_bold), Paragraph("<b>Composite DEC-12</b>", tb_bold), Paragraph("<b>0.5360</b>", tb_bold), Paragraph("<b>0.5651</b>", tb_bold), Paragraph("<b>66.67%</b>", tb_bold), Paragraph("<b>12.10% (Optimal)</b>", tb_green)],
+        [Paragraph("Tweedie L2 Baseline", tb_style), Paragraph("Euclidean", tb_center), Paragraph("0.5350", tb_center), Paragraph("0.5431", tb_center), Paragraph("61.70%", tb_center), Paragraph("38.30%", tb_center)],
+        [Paragraph("Directional Cosine", tb_style), Paragraph("Cosine [1-cos]", tb_center), Paragraph("0.5358", tb_center), Paragraph("0.5520", tb_center), Paragraph("65.20%", tb_center), Paragraph("18.40%", tb_center)],
+        [Paragraph("+ Spectral Perturbation", tb_style), Paragraph("Cosine+Laplacian", tb_center), Paragraph("0.5360", tb_center), Paragraph("0.5651", tb_center), Paragraph("66.67%", tb_center), Paragraph("12.10%", tb_center)],
+        [Paragraph("<b>Full LSD Engine (Composite)</b>", tb_bold), Paragraph("<b>Composite DEC-12</b>", tb_bold), Paragraph("<b>0.5360</b>", tb_bold), Paragraph("<b>0.5651</b>", tb_bold), Paragraph("<b>66.67%</b>", tb_bold), Paragraph("<b>12.10% (Optimal)</b>", tb_green)],
     ]
     t_ab = Table(ab_data, colWidths=[180, 125, 75, 75, 85, 146])
     t_ab.setStyle(TableStyle([
@@ -305,7 +305,7 @@ def build_pdf():
     col2.append(t_lora)
     col2.append(Spacer(1, 3))
     col2.append(Paragraph(
-        "<b>Facial LoRA Prior (Phase 3 & 6):</b> Parameter-efficient Low-Rank Adapters (r=8, &alpha;=16, AdamW &eta;=10<sup>-4</sup>, weight decay 0.01) on UNet cross-attention modules (to_q, to_k, to_v) "
+        "<b>Facial LoRA Prior Specialization:</b> Parameter-efficient Low-Rank Adapters (r=8, &alpha;=16, AdamW &eta;=10<sup>-4</sup>, weight decay 0.01) on UNet cross-attention modules (to_q, to_k, to_v) "
         "converged training loss from 0.184 to 0.038 across 500 optimization steps. Trainable parameters remained &lt;0.5% of backbone weights, pushing facial AUROC past 0.85.",
         body_style
     ))
@@ -319,7 +319,7 @@ def build_pdf():
     # COLUMN 3: LOCALIZATION PROOF, MULTI-PANEL FIGURE, ROBUSTNESS & SUMMARY
     # =========================================================================
     col3 = []
-    col3.append(Paragraph("Phase 5 Ground-Truth Localization Proof", h1_style))
+    col3.append(Paragraph("Ground-Truth Localization Proof", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col3.append(Paragraph(
         "Candidate heatmaps evaluated against 50 partially manipulated FaceForensics++ video frames paired with authentic binary ground-truth masks. "
@@ -353,7 +353,7 @@ def build_pdf():
     fig_path = 'latex_report/figures/inspection.png'
     if os.path.exists(fig_path):
         col3.append(Image(fig_path, width=FRAME_WIDTH - 4, height=184))
-        col3.append(Paragraph("<b>Figure 1:</b> Multi-panel inspection: (a) Input RGB, (b) LSD Directional Heatmap, (c) LaRE² L2 Baseline, (d) Differential Overlay.", caption_style))
+        col3.append(Paragraph("Multi-panel forensic inspection: (a) Input RGB, (b) LSD Directional Heatmap, (c) LaRE² L2 Baseline, (d) Differential Overlay.", caption_style))
     col3.append(Spacer(1, 4))
 
     # Figure 2: Real vs Fake Localization
@@ -362,7 +362,7 @@ def build_pdf():
     fig_fake = 'latex_report/figures/fake_face_localization.png'
     if os.path.exists(fig_fake):
         col3.append(Image(fig_fake, width=FRAME_WIDTH - 4, height=180))
-        col3.append(Paragraph("<b>Figure 2:</b> Deepfake face localization heatmap: LSD isolates tampered facial regions (eyes/mouth) while suppressing authentic background.", caption_style))
+        col3.append(Paragraph("Deepfake facial localization heatmap: LSD isolates tampered facial regions (eyes/mouth) while suppressing authentic background.", caption_style))
     col3.append(Spacer(1, 4))
 
     col3.append(Paragraph("Social Media Robustness & Project Deliverables", h1_style))
@@ -395,7 +395,7 @@ def build_pdf():
         body_style
     ))
     col3.append(Paragraph(
-        "<b>Future Scope:</b> (1) 3D spatio-temporal video score dynamics for temporal flickering defense; (2) TensorRT INT8 compilation for edge cameras.",
+        "<b>Future Scope:</b> 3D spatio-temporal video score dynamics for temporal flickering defense; TensorRT INT8 compilation for edge camera deployment.",
         caption_style
     ))
 
