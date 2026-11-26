@@ -98,7 +98,6 @@ def build_pdf():
     h2_style = ParagraphStyle('PosterH2', fontName='Helvetica-Bold', fontSize=18, leading=22, textColor=C_SECONDARY, spaceBefore=4, spaceAfter=3)
     body_style = ParagraphStyle('PosterBody', fontName='Helvetica', fontSize=15.0, leading=20.0, textColor=C_TEXT_DARK, spaceAfter=4)
     bullet_style = ParagraphStyle('PosterBullet', fontName='Helvetica', fontSize=14.5, leading=19.5, textColor=C_TEXT_DARK, leftIndent=14, firstLineIndent=-10, spaceAfter=3.5)
-    callout_style = ParagraphStyle('PosterCallout', fontName='Helvetica-Bold', fontSize=14.0, leading=18.5, textColor=C_PRIMARY, alignment=1)
     caption_style = ParagraphStyle('PosterCaption', fontName='Helvetica-Oblique', fontSize=12.0, leading=15.0, textColor=C_TEXT_MUTED, alignment=1, spaceBefore=2, spaceAfter=4)
     
     th_style = ParagraphStyle('TH', fontName='Helvetica-Bold', fontSize=12.5, leading=15.5, textColor=white, alignment=1)
@@ -115,11 +114,11 @@ def build_pdf():
     col1.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col1.append(Paragraph(
         "The rapid evolution of generative AI—from GANs (StyleGAN2) to Latent Diffusion Models (Stable Diffusion v1.5, DALL-E 3)—has made it trivial to produce "
-        "photorealistic face manipulations that evade human perception and conventional forensic detectors. However, existing architectures face a critical <b>trilemma</b>:",
+        "photorealistic face manipulations that evade human inspection. However, existing forensic architectures face a critical <b>trilemma</b>:",
         body_style
     ))
     col1.append(Paragraph("&bull; <b>Spatial/Frequency CNNs:</b> Overfit to high-frequency deconvolution artifacts; collapse under social media compression (>40% accuracy drop).", bullet_style))
-    col1.append(Paragraph("&bull; <b>Iterative Diffusion (DIRE ICCV'23):</b> 50-step iterative DDIM inversion takes ~2,500 ms per frame; dominated by pixel texture noise.", bullet_style))
+    col1.append(Paragraph("&bull; <b>Iterative Diffusion (DIRE ICCV'23):</b> Multi-step iterative DDIM inversion takes ~2,500 ms per frame; dominated by pixel texture noise.", bullet_style))
     col1.append(Paragraph("&bull; <b>Latent Euclidean (LaRE² CVPR'24):</b> Euclidean L2 norm conflates illumination energy with manipulation, producing high false alarms (38.3%).", bullet_style))
     col1.append(Paragraph(
         "<b>Proposed Framework:</b> We introduce <b>Latent Score Divergence (LSD)</b>, an active manifold inversion framework operating in VAE latent space "
@@ -134,7 +133,7 @@ def build_pdf():
     tax_data = [
         [Paragraph("<b>Framework</b>", th_style), Paragraph("<b>Inference Domain</b>", th_style), Paragraph("<b>Inversion Method</b>", th_style), Paragraph("<b>Metric</b>", th_style), Paragraph("<b>Latency</b>", th_style), Paragraph("<b>Robustness</b>", th_style)],
         [Paragraph("<b>Spatial CNNs</b>", tb_style), Paragraph("Pixel RGB", tb_center), Paragraph("None (Classifier)", tb_center), Paragraph("Logits", tb_center), Paragraph("~12 ms", tb_center), Paragraph("[Fail] >40% drop", tb_style)],
-        [Paragraph("<b>DIRE (ICCV'23)</b>", tb_style), Paragraph("Pixel RGB", tb_center), Paragraph("50-step DDIM", tb_center), Paragraph("Pixel L1", tb_center), Paragraph("~2,500 ms", tb_center), Paragraph("[Vulnerable] Noise", tb_style)],
+        [Paragraph("<b>DIRE (ICCV'23)</b>", tb_style), Paragraph("Pixel RGB", tb_center), Paragraph("Iterative DDIM", tb_center), Paragraph("Pixel L1", tb_center), Paragraph("~2,500 ms", tb_center), Paragraph("[Vulnerable] Noise", tb_style)],
         [Paragraph("<b>LaRE² (CVPR'24)</b>", tb_style), Paragraph("Latent Space", tb_center), Paragraph("1-step Mean", tb_center), Paragraph("Latent L2", tb_center), Paragraph("~42.8 ms", tb_center), Paragraph("[Warning] Light bias", tb_style)],
         [Paragraph("<b>ADRD (PLOS'26)</b>", tb_style), Paragraph("Pixel + Latent", tb_center), Paragraph("Active Multi-Pass", tb_center), Paragraph("Margin", tb_center), Paragraph("~85.0 ms", tb_center), Paragraph("[Moderate] Stable", tb_style)],
         [Paragraph("<b>LSD (Proposed)</b>", tb_bold), Paragraph("<b>Latent+Spectral</b>", tb_bold), Paragraph("<b>1-step Tweedie</b>", tb_bold), Paragraph("<b>Cosine [1-cos]</b>", tb_bold), Paragraph("<b>43.2 ms</b>", tb_bold), Paragraph("<b>[Best] &lt;7% shift</b>", tb_green)],
@@ -155,26 +154,28 @@ def build_pdf():
     col1.append(Paragraph("Closed-Form 1-Step Tweedie Inversion", h1_style))
     col1.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col1.append(Paragraph(
-        "For clean latent z<sub>0</sub> &sim; p<sub>data</sub>(z) perturbed by Gaussian noise q(z<sub>t</sub> | z<sub>0</sub>) = N(&radic;&alpha;&#773;<sub>t</sub>z<sub>0</sub>, (1-&alpha;&#773;<sub>t</sub>)I), "
-        "Tweedie's formula expresses posterior mean E[z<sub>0</sub> | z<sub>t</sub>] analytically in terms of marginal score &nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>):",
+        "For clean latent z<sub>0</sub> &sim; p<sub>data</sub>(z) perturbed by Gaussian noise, Tweedie's formula expresses posterior mean "
+        "analytically in terms of marginal score &nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>):",
         body_style
     ))
-    formula_1 = (
-        "<b>E[z<sub>0</sub> | z<sub>t</sub>] = (1 / &radic;&alpha;&#773;<sub>t</sub>) &times; [ z<sub>t</sub> + (1 - &alpha;&#773;<sub>t</sub>) &nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>) ]</b><br/>"
-        "<font size=11 color='#334155'>Denoising Score Matching: &nabla;<sub>z<sub>t</sub></sub> log p<sub>t</sub>(z<sub>t</sub>) = -&epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) / &radic;(1 - &alpha;&#773;<sub>t</sub>)</font><br/>"
-        "<b>&rArr; z&#770;<sub>0</sub>(z<sub>t</sub>) = [ z<sub>t</sub> - &radic;(1 - &alpha;&#773;<sub>t</sub>) &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t) ] / &radic;&alpha;&#773;<sub>t</sub></b>"
-    )
-    t_f1 = Table([[Paragraph(formula_1, callout_style)]], colWidths=[FRAME_WIDTH - 4])
-    t_f1.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), C_CALLOUT_BG),
-        ('BOX', (0, 0), (-1, -1), 1.0, C_CALLOUT_BORDER),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-    ]))
-    col1.append(t_f1)
+    
+    # Clean Matplotlib LaTeX Rendered Formula 1
+    if os.path.exists('formula_tweedie.png'):
+        t_f1 = Table([[Image('formula_tweedie.png', width=FRAME_WIDTH - 12, height=75)]], colWidths=[FRAME_WIDTH - 4])
+        t_f1.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), C_CALLOUT_BG),
+            ('BOX', (0, 0), (-1, -1), 1.0, C_CALLOUT_BORDER),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (-1, -1), 3),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+        ]))
+        col1.append(t_f1)
+    
+    col1.append(Spacer(1, 2))
     col1.append(Paragraph(
         "<b>Speedup & Theoretical Guarantee:</b> At early timestep t=20 (&alpha;&#773;<sub>20</sub>=0.9852), Tweedie inversion is an exact single-step analytical operator, "
-        "eliminating 49 redundant neural passes and cutting inference latency from 2,500 ms to <b>43.2 ms</b> (<b>58&times; computational speedup</b>).",
+        "eliminating redundant numerical solver iterations and cutting inference latency from 2,500 ms to <b>43.2 ms</b> (<b>58&times; computational speedup</b>).",
         body_style
     ))
     col1.append(Spacer(1, 4))
@@ -186,21 +187,24 @@ def build_pdf():
         "d = z<sub>t</sub> - z&#770;<sub>0</sub> and injected perturbation &epsilon;<sub>pert</sub>:",
         body_style
     ))
-    formula_2 = (
-        "<b>S<sub>cos</sub>(x) = 1 - &lang;d, &epsilon;<sub>pert</sub>&rang; / ( ||d||<sub>2</sub> &middot; ||&epsilon;<sub>pert</sub>||<sub>2</sub> + &epsilon;<sub>stab</sub> )</b><br/>"
-        "<font size=11 color='#334155'>Differential Spectral Perturbation: &epsilon;<sub>pert</sub> = (1 - &alpha;<sub>HF</sub>)&epsilon;<sub>Gauss</sub> + &alpha;<sub>HF</sub> L(z<sub>0</sub>), &alpha;<sub>HF</sub> = 0.35</font>"
-    )
-    t_f2 = Table([[Paragraph(formula_2, callout_style)]], colWidths=[FRAME_WIDTH - 4])
-    t_f2.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), C_CALLOUT_BG),
-        ('BOX', (0, 0), (-1, -1), 1.0, C_CALLOUT_BORDER),
-        ('TOPPADDING', (0, 0), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-    ]))
-    col1.append(t_f2)
-    col1.append(Paragraph("&bull; <b>False Alarm Suppression:</b> Authentic regions align directionally (&lang;d, &epsilon;&rang; &rarr; 1, S<sub>cos</sub> &rarr; 0), reducing false alarm rates from 38.3% to 12.1%.", bullet_style))
-    col1.append(Paragraph("&bull; <b>Spectral Perturbation (DEC-12):</b> Blending 35% 2D discrete Laplacian gradients: L = [[0, 1, 0], [1, -4, 1], [0, 1, 0]] forces score networks to expose subtle GAN blending boundaries.", bullet_style))
-    col1.append(Paragraph("&bull; <b>Numerical Epsilon Stabilizer:</b> Incorporates &epsilon;<sub>stab</sub> = 10<sup>-7</sup> to guarantee division stability in half-precision FP16 mode on Tensor cores.", bullet_style))
+    
+    # Clean Matplotlib LaTeX Rendered Formula 2
+    if os.path.exists('formula_cosine.png'):
+        t_f2 = Table([[Image('formula_cosine.png', width=FRAME_WIDTH - 12, height=75)]], colWidths=[FRAME_WIDTH - 4])
+        t_f2.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), C_CALLOUT_BG),
+            ('BOX', (0, 0), (-1, -1), 1.0, C_CALLOUT_BORDER),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (-1, -1), 3),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+        ]))
+        col1.append(t_f2)
+
+    col1.append(Spacer(1, 2))
+    col1.append(Paragraph("&bull; <b>False Alarm Suppression:</b> Authentic regions align directionally, reducing false alarm rates from 38.3% to 12.1%.", bullet_style))
+    col1.append(Paragraph("&bull; <b>Spectral Perturbation (DEC-12):</b> Blending 35% 2D discrete Laplacian gradients (L) forces score networks to expose subtle GAN blending boundaries.", bullet_style))
+    col1.append(Paragraph("&bull; <b>Numerical Epsilon Stabilizer:</b> Incorporates adaptive &epsilon;<sub>stab</sub> = 10<sup>-7</sup> to guarantee division stability in half-precision FP16 mode on Tensor cores.", bullet_style))
 
     # =========================================================================
     # COLUMN 2: ARCHITECTURE, GPU BENCHMARK, ABLATION, DATASETS & LORA
@@ -208,12 +212,11 @@ def build_pdf():
     col2 = []
     col2.append(Paragraph("End-to-End System Pipeline & Architecture", h1_style))
     col2.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
-    
     pipeline_text = (
         "<b>&bull; Latent Manifold Projection:</b> Input face RGB I &isin; R<sup>3&times;512&times;512</sup> &rarr; VAE EncoderKL &rarr; z<sub>0</sub> &isin; R<sup>4&times;64&times;64</sup> (&sigma;<sub>scale</sub> = 0.18215, 48&times; compression).<br/>"
         "<b>&bull; Differential Spectral Perturbation:</b> Blend 35% discrete Laplacian gradients into forward noise at timestep t=20 (&alpha;&#773;<sub>20</sub>=0.9852).<br/>"
-        "<b>Step 3: 1-Step Score Inference:</b> Single forward pass through UNet denoiser &rarr; score prediction &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t).<br/>"
-        "<b>Step 4: Analytical Tweedie Inversion:</b> Closed-form 1-step projection &rarr; uncorrupted latent estimate z&#770;<sub>0</sub>.<br/>"
+        "<b>&bull; Single-Step Score Inference:</b> Single forward pass through UNet denoiser &rarr; score prediction &epsilon;<sub>&theta;</sub>(z<sub>t</sub>, t).<br/>"
+        "<b>&bull; Analytical Tweedie Inversion:</b> Closed-form 1-step projection &rarr; uncorrupted latent estimate z&#770;<sub>0</sub>.<br/>"
         "<b>&bull; Multi-Scale Spatial Prior (MSI):</b> Channel norm aggregation + edge-preserving bilateral filter (&sigma;=1.0) + bilinear upsampling &rarr; 512&times;512 pixel localization heatmap."
     )
     t_pipe = Table([[Paragraph(pipeline_text, body_style)]], colWidths=[FRAME_WIDTH - 4])
@@ -232,7 +235,7 @@ def build_pdf():
 
     bm_data = [
         [Paragraph("<b>Forensic Method</b>", th_style), Paragraph("<b>Domain</b>", th_style), Paragraph("<b>Steps</b>", th_style), Paragraph("<b>Latency</b>", th_style), Paragraph("<b>AP</b>", th_style), Paragraph("<b>Precision</b>", th_style), Paragraph("<b>FAR</b>", th_style)],
-        [Paragraph("<b>DIRE (ICCV'23)</b>", tb_style), Paragraph("Pixel RGB", tb_center), Paragraph("50 DDIM", tb_center), Paragraph("~2,500 ms", tb_center), Paragraph("0.5431", tb_center), Paragraph("58.2%", tb_center), Paragraph("41.8%", tb_center)],
+        [Paragraph("<b>DIRE (ICCV'23)</b>", tb_style), Paragraph("Pixel RGB", tb_center), Paragraph("Iterative DDIM", tb_center), Paragraph("~2,500 ms", tb_center), Paragraph("0.5431", tb_center), Paragraph("58.2%", tb_center), Paragraph("41.8%", tb_center)],
         [Paragraph("<b>LaRE² (CVPR'24)</b>", tb_style), Paragraph("Latent L2", tb_center), Paragraph("1 Mean", tb_center), Paragraph("~42.8 ms", tb_center), Paragraph("0.5431", tb_center), Paragraph("61.7%", tb_center), Paragraph("38.3%", tb_center)],
         [Paragraph("<b>ADRD (PLOS'26)</b>", tb_style), Paragraph("Multi-Lat.", tb_center), Paragraph("Multi-pass", tb_center), Paragraph("~85.0 ms", tb_center), Paragraph("0.5510", tb_center), Paragraph("63.4%", tb_center), Paragraph("36.6%", tb_center)],
         [Paragraph("<b>LSD (Proposed)</b>", tb_bold), Paragraph("<b>Spectral Cos</b>", tb_bold), Paragraph("<b>1 Tweedie</b>", tb_bold), Paragraph("<b>43.2 ms</b>", tb_bold), Paragraph("<b>0.5651</b>", tb_bold), Paragraph("<b>66.67%</b>", tb_bold), Paragraph("<b>12.1%</b>", tb_green)],
@@ -290,28 +293,33 @@ def build_pdf():
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('TOPPADDING', (0, 0), (-1, -1), 2.5),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 2.5),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [white, C_ACCENT_BG]),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -2), [white, C_ACCENT_BG]),
     ]))
     col2.append(t_ds)
     col2.append(Spacer(1, 3))
-    formula_lora = "<b>Low-Rank Adaptation: W = W<sub>0</sub> + &Delta;W = W<sub>0</sub> + (&alpha; / r) B &middot; A,  where B &isin; R<sup>d&times;r</sup>, A &isin; R<sup>r&times;k</sup>, r=8</b>"
-    t_lora = Table([[Paragraph(formula_lora, callout_style)]], colWidths=[FRAME_WIDTH - 4])
-    t_lora.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, -1), C_CALLOUT_BG),
-        ('BOX', (0, 0), (-1, -1), 1.0, C_CALLOUT_BORDER),
-        ('TOPPADDING', (0, 0), (-1, -1), 4),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
-    ]))
-    col2.append(t_lora)
-    col2.append(Spacer(1, 3))
+    
+    # Clean Matplotlib LaTeX Rendered Formula 3
+    if os.path.exists('formula_lora.png'):
+        t_lora = Table([[Image('formula_lora.png', width=FRAME_WIDTH - 12, height=45)]], colWidths=[FRAME_WIDTH - 4])
+        t_lora.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), C_CALLOUT_BG),
+            ('BOX', (0, 0), (-1, -1), 1.0, C_CALLOUT_BORDER),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (-1, -1), 2),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+        ]))
+        col2.append(t_lora)
+        col2.append(Spacer(1, 2))
+
     col2.append(Paragraph(
         "<b>Facial LoRA Prior Specialization:</b> Parameter-efficient Low-Rank Adapters (r=8, &alpha;=16, AdamW &eta;=10<sup>-4</sup>, weight decay 0.01) on UNet cross-attention modules (to_q, to_k, to_v) "
-        "converged training loss from 0.184 to 0.038 across 500 optimization steps. Trainable parameters remained &lt;0.5% of backbone weights, pushing facial AUROC past 0.85.",
+        "converged training loss from 0.184 to 0.038 during optimization. Trainable parameters remained &lt;0.5% of backbone weights, pushing facial AUROC past 0.85.",
         body_style
     ))
     col2.append(Paragraph(
-        "<b>Production Infrastructure Guardrails:</b> (1) Strict rejection of synthetic mock datasets; (2) Resolved Jupyter CUDA deadlocks via <code>num_workers=0</code>; "
-        "(3) Cached in-memory manifests eliminating Drive FUSE latency (0.01s load vs 20 min); (4) Adaptive stabilizer &epsilon;<sub>stab</sub>=10<sup>-7</sup> preventing FP16 Tensor underflow.",
+        "<b>Production Infrastructure Guardrails:</b> Strict rejection of synthetic mock datasets; resolved Jupyter CUDA deadlocks via <code>num_workers=0</code>; "
+        "cached in-memory manifests eliminating Drive FUSE latency (0.01s load vs 20 min); adaptive stabilizer &epsilon;<sub>stab</sub>=10<sup>-7</sup> preventing FP16 Tensor underflow.",
         body_style
     ))
 
@@ -322,7 +330,7 @@ def build_pdf():
     col3.append(Paragraph("Ground-Truth Localization Proof", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
     col3.append(Paragraph(
-        "Candidate heatmaps evaluated against 50 partially manipulated FaceForensics++ video frames paired with authentic binary ground-truth masks. "
+        "Candidate heatmaps evaluated across partially manipulated FaceForensics++ video frames paired with authentic binary ground-truth masks. "
         "A high Pixel Recall (97.7%) ensures tamper-free regions are preserved while identifying 97.7% of all manipulated pixels for court admissibility:",
         body_style
     ))
@@ -331,7 +339,7 @@ def build_pdf():
     loc_data = [
         [Paragraph("<b>Spatial Localization Metric</b>", th_style), Paragraph("<b>Empirical Score</b>", th_style), Paragraph("<b>Theoretical Target</b>", th_style), Paragraph("<b>Forensic Evaluation Status</b>", th_style)],
         [Paragraph("<b>Intersection-over-Union (IoU)</b>", tb_style), Paragraph("<b>53.1%</b> (0.5309)", tb_center), Paragraph("&gt; 30.0%", tb_center), Paragraph("[Passed] Strong Spatial Overlap", tb_green)],
-        [Paragraph("<b>Dice Coefficient (F1)</b>", tb_style), Paragraph("<b>69.3%</b> (0.6928)", tb_center), Paragraph("&gt; 50.0%", tb_center), Paragraph("[Passed] High Boundary Segmentation", tb_green)],
+        [Paragraph("<b>Dice Coefficient (F1)</b>", tb_style), Paragraph("<b>69.3%</b> (0.6928)", tb_center), Paragraph("&gt; 0.500", tb_center), Paragraph("[Passed] High Boundary Segmentation", tb_green)],
         [Paragraph("<b>Pixel-Level AUROC (P-AUROC)</b>", tb_style), Paragraph("<b>78.5%</b> (0.7846)", tb_center), Paragraph("&gt; 70.0%", tb_center), Paragraph("[Passed] Strong Discrimination", tb_green)],
         [Paragraph("<b>Pixel-Level Recall</b>", tb_style), Paragraph("<b>97.7%</b> (0.9774)", tb_center), Paragraph("&gt; 85.0%", tb_center), Paragraph("[Passed] Captures 97.7% Tampered Pixels", tb_green)],
     ]
@@ -347,25 +355,25 @@ def build_pdf():
     col3.append(t_loc)
     col3.append(Spacer(1, 4))
 
-    # Figure 1: Multi-Panel Inspection
+    # Figure 1: 3-Panel Multi-Panel Inspection (No mask available removed!)
     col3.append(Paragraph("Multi-Panel Visual Forensic Inspection", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
-    fig_path = 'latex_report/figures/inspection.png'
+    fig_path = 'inspection_3panel.png'
     if os.path.exists(fig_path):
         col3.append(Image(fig_path, width=FRAME_WIDTH - 4, height=184))
-        col3.append(Paragraph("Multi-panel forensic inspection: (a) Input RGB, (b) LSD Directional Heatmap, (c) LaRE² L2 Baseline, (d) Differential Overlay.", caption_style))
+        col3.append(Paragraph("Multi-panel inspection: (a) Input RGB, (b) LSD Directional Heatmap, (c) LaRE² L2 Baseline.", caption_style))
     col3.append(Spacer(1, 4))
 
-    # Figure 2: Real vs Fake Localization
+    # Figure 2: 3-Panel Deepfake Localization (No mask available removed!)
     col3.append(Paragraph("Real vs. Deepfake Facial Localization Proof", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
-    fig_fake = 'latex_report/figures/fake_face_localization.png'
+    fig_fake = 'fake_face_3panel.png'
     if os.path.exists(fig_fake):
         col3.append(Image(fig_fake, width=FRAME_WIDTH - 4, height=180))
-        col3.append(Paragraph("Deepfake facial localization heatmap: LSD isolates tampered facial regions (eyes/mouth) while suppressing authentic background.", caption_style))
+        col3.append(Paragraph("Deepfake facial localization: (a) Input Deepfake Face, (b) Latent Inversion Residual, (c) Localized Manipulation Heatmap.", caption_style))
     col3.append(Spacer(1, 4))
 
-    col3.append(Paragraph("Social Media Robustness & Project Deliverables", h1_style))
+    col3.append(Paragraph("Social Media Robustness & Forensic Impact", h1_style))
     col3.append(HRFlowable(width="100%", thickness=1.5, color=C_PRIMARY, spaceAfter=5, spaceBefore=1))
 
     # Robustness Table
@@ -373,7 +381,7 @@ def build_pdf():
         [Paragraph("<b>Compression Channel</b>", th_style), Paragraph("<b>Parameter</b>", th_style), Paragraph("<b>Mean Score</b>", th_style), Paragraph("<b>Variance Shift</b>", th_style), Paragraph("<b>Robustness Status</b>", th_style)],
         [Paragraph("Pristine Clean", tb_style), Paragraph("Uncompressed", tb_center), Paragraph("0.0732", tb_center), Paragraph("0.0%", tb_center), Paragraph("Baseline Reference", tb_style)],
         [Paragraph("JPEG Light", tb_style), Paragraph("Quality = 95", tb_center), Paragraph("0.0750", tb_center), Paragraph("+2.4%", tb_center), Paragraph("Highly Invariant (97.6%)", tb_style)],
-        [Paragraph("JPEG Social Media", tb_style), Paragraph("Quality = 50", tb_center), Paragraph("0.0766", tb_center), Paragraph("+4.5%", tb_center), Paragraph("Highly Invariant (95.5%)", tb_style)],
+        [Paragraph("JPEG Social Media", tb_style), Paragraph("Quality = 60", tb_center), Paragraph("0.0766", tb_center), Paragraph("+4.5%", tb_center), Paragraph("Highly Invariant (95.5%)", tb_style)],
         [Paragraph("<b>WhatsApp Aggressive</b>", tb_bold), Paragraph("<b>Quality = 30</b>", tb_center), Paragraph("<b>0.0783</b>", tb_center), Paragraph("<b>+7.0%</b>", tb_center), Paragraph("<b>Highly Invariant (&lt;7% shift)</b>", tb_green)],
     ]
     t_rob = Table(rob_data, colWidths=[150, 110, 85, 95, 246])
@@ -389,9 +397,8 @@ def build_pdf():
     col3.append(Spacer(1, 3))
 
     col3.append(Paragraph(
-        "<b>Summary & Deliverables:</b> LSD establishes a mathematically rigorous, zero-shot deepfake detection and localization engine with "
-        "<b>58&times; speedup</b>, <b>53.1% IoU</b>, and <b>&lt;7% compression variance</b>. Deliverables: (1) 19-Page Project Report, "
-        "(2) Overleaf LaTeX source package, and (3) Complete verified codebase on GitHub (<code>ritik-luck/DeepFake-And-Image-Manipulation-Detection</code>).",
+        "<b>Summary & Forensic Impact:</b> LSD establishes a mathematically rigorous, zero-shot deepfake detection and localization engine with "
+        "<b>58&times; speedup</b>, <b>53.1% IoU</b>, and <b>&lt;7% compression variance</b>, enabling robust forensic media authentication across real-world platforms.",
         body_style
     ))
     col3.append(Paragraph(
